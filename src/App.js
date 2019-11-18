@@ -3,6 +3,7 @@ import "normalize.css"
 import './App.css'
 import TodoInput from './component/TodoInput'
 import TodoItem from './component/TodoItem'
+import UserDialog from './component/UserDialog'
 
 class App extends Component {
   constructor(props) {
