@@ -12,8 +12,12 @@ class App extends Component {
       todoList: []
     }
   }
-  toggle(e, todo){
+  toggle(e, todo) {
     todo.status = todo.status === 'completed' ? '' : 'completed'
+    this.setState(this.state)
+  }
+  delete(event, todo){
+    todo.deleted = true
     this.setState(this.state) 
   }
   changeTitle(event) {
@@ -36,12 +40,14 @@ class App extends Component {
   }
   render() {
 
-    let todos = this.state.todoList.map((item, index) => {
+    let todos = this.state.todoList
+      .filter((item)=> !item.deleted)
+      .map((item,index)=>{
       return (
         <li key={index}>
           <TodoItem todo={item}
             onToggle={this.toggle.bind(this)}
-          />
+            onDelete={this.delete.bind(this)} />
         </li>
       )
     })
