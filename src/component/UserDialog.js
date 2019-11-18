@@ -8,6 +8,7 @@ export default class UserDialog extends Component {
     }
   }
   switch(e) {
+    console.log(1)
     this.setState({
       selected: e.target.value
     })
@@ -46,16 +47,23 @@ export default class UserDialog extends Component {
     return (
       <div className="UserDialog-Wrapper">
         <div className="UserDialog">
-          <nav onChange={this.switch.bind(this)}>
-            <label><input type="radio" value="signUp" checked={this.state.selected === 'signUp'} /> 注册</label>
-            <label><input type="radio" value="signIn" checked={this.state.selected === 'signIn'} /> 登录</label>
-          </nav>
+          <div onChange={this.switch.bind(this)}>
+            <label><input
+              type="radio"
+              value="signUp"
+              name='xxx'
+              checked={this.state.selected === 'signUp'} /> 注册</label>
+            <label><input
+              type="radio"
+              value="signIn"
+              name='xxx'
+              checked={this.state.selected === 'signIn'} /> 登录 </label>
+          </div>
           <div className="panes">
-            {this.state.selected === 'signUp' ? signUpForm : null}
-            {this.state.selected === 'signIn' ? signInForm : null}
+            {this.state.selected === 'signUp' ? signUpForm : signInForm}
           </div>
         </div>
-      </div>
+      </div >
     )
   }
 }
