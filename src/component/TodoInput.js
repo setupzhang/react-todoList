@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import './style/TodoInput.css'
 
 export default class TodoInput extends Component {
   submit = (e) => {
@@ -8,9 +9,13 @@ export default class TodoInput extends Component {
   }
   render() {
     return (
-      <input type="text" value={this.props.content}
+      <input
+        className="TodoInput"
+        type="text"
+        value={this.props.content}
         onChange={this.props.onChange}
-        onKeyPress={this.submit.bind(this)} />
+        onKeyPress={this.submit.bind(this)}
+      />
     )
   }
 }
