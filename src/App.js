@@ -4,12 +4,13 @@ import './App.css'
 import TodoInput from './component/TodoInput'
 import TodoItem from './component/TodoItem'
 import UserDialog from './component/UserDialog'
+import { getCurrentUser } from './leanCloud'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      user: {},
+      user: getCurrentUser() || {},
       newTodo: '',
       todoList: []
     }
