@@ -20,6 +20,10 @@ export default class UserDialog extends Component {
   }
   signUp(e) {
     e.preventDefault()
+    if (!this.state.username || !this.state.password) {
+      alert('用户名和密码不得为空')
+      return undefined
+    }
     let { username, password } = this.state.formData
     let success = (user) => {
       this.props.onSignUp.call(null, user)
@@ -27,8 +31,10 @@ export default class UserDialog extends Component {
     let error = (error) => {
       switch (error.code) {
         case 202:
-          alert('用户名已被占用')
+          alert('用户名已存在，换个试试')
           break
+        case 201:
+          alert('请输入密码 :)')
         default:
           alert(error)
           break
@@ -46,6 +52,9 @@ export default class UserDialog extends Component {
       switch (error.code) {
         case 210:
           alert('用户名与密码不匹配')
+          break
+        case 211:
+          alert('不存在的用户名，请重新输入或注册新的账户')
           break
         default:
           alert(error)
