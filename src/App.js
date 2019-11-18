@@ -4,7 +4,7 @@ import './App.css'
 import TodoInput from './component/TodoInput'
 import TodoItem from './component/TodoItem'
 import UserDialog from './component/UserDialog'
-import { getCurrentUser } from './leanCloud'
+import { getCurrentUser, signOut } from './leanCloud'
 
 class App extends Component {
   constructor(props) {
@@ -44,6 +44,12 @@ class App extends Component {
   onSignUp(user) {
     this.setState({ user: user })
   }
+  signOut() {
+    signOut()
+    this.setState({
+      user:{}
+    })
+  }
   render() {
     let todos = this.state.todoList
       .filter((item) => !item.deleted)
@@ -58,7 +64,9 @@ class App extends Component {
       })
     return (
       <div className="App">
-        <h1>{this.state.user.username || '我'}的待办</h1>
+        <h1>{this.state.user.username || '我'}的待办
+          {this.state.user.id ? <button onClick={this.signOut.bind(this)}>登出</button> : null}
+        </h1>
         <div className="inputWrapper">
           <TodoInput content={this.state.newTodo}
             onChange={this.changeTitle.bind(this)}
