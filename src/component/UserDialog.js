@@ -22,7 +22,7 @@ export default class UserDialog extends Component {
   }
   signUp(e) {
     e.preventDefault()
-    if (!this.state.username || !this.state.password) {
+    if (!this.state.formData.username || !this.state.formData.password) {
       alert('用户名和密码不得为空')
       return undefined
     }
@@ -37,6 +37,7 @@ export default class UserDialog extends Component {
           break
         case 201:
           alert('请输入密码 :)')
+          break
         default:
           alert(error)
           break
@@ -66,9 +67,12 @@ export default class UserDialog extends Component {
     signIn(username, password, success, error)
   }
   changeFormData = (e, key) => {
-    let stateCopy = JSON.parse(JSON.stringify(this.state))  // 用 JSON 深拷贝
-    stateCopy.formData[key] = e.target.value
-    this.setState(stateCopy)
+    this.setState({
+      formData: {
+        ...this.state.formData,
+        [key]: e.target.value
+      }
+    })
   }
   render() {
     return (
@@ -90,12 +94,12 @@ export default class UserDialog extends Component {
             {this.state.selected === 'signUp' ?
               <SignUpForm formData={this.state.formData}
                 onSubmit={this.signUp.bind(this)}
-                onChange={this.changeFormData.bind(this)}
+                onChange={this.changeFormData}
               />
               : null}
             {this.state.selected === 'signIn' ?
               <SignInForm formData={this.state.formData}
-                onChange={this.changeFormData.bind(this)}
+                onChange={this.changeFormData}
                 onSubmit={this.signIn.bind(this)}
               />
               : null}
