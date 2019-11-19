@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './style/UserDialog.css'
 import { signUp, signIn } from '../leanCloud'
+import SignUpForm from './SignUpForm'
+import SignInForm from './SignInForm'
 
 export default class UserDialog extends Component {
   constructor(props) {
@@ -69,40 +71,6 @@ export default class UserDialog extends Component {
     this.setState(stateCopy)
   }
   render() {
-    let signUpForm = (
-      <form className="signUp" onSubmit={this.signUp.bind(this)}> {/* 注册*/}
-        <div className="row">
-          <label>用户名</label>
-          <input type="text" value={this.state.formData.username}
-            onChange={(e) => this.changeFormData(e, 'username')} />
-        </div>
-        <div className="row">
-          <label>密码</label>
-          <input type="password" value={this.state.formData.password}
-            onChange={(e) => this.changeFormData(e, 'password')} />
-        </div>
-        <div className="row actions">
-          <button type="submit">注册</button>
-        </div>
-      </form>
-    )
-    let signInForm = (
-      <form className="signIn" onSubmit={this.signIn.bind(this)}> {/* 登录*/}
-        <div className="row">
-          <label>用户名</label>
-          <input type="text" value={this.state.formData.username}
-            onChange={(e) => this.changeFormData(e, 'username')} />
-        </div>
-        <div className="row">
-          <label>密码</label>
-          <input type="password" value={this.state.formData.password}
-            onChange={(e) => this.changeFormData(e, 'password')} />
-        </div>
-        <div className="row actions">
-          <button type="submit">登录</button>
-        </div>
-      </form>
-    )
     return (
       <div className="UserDialog-Wrapper">
         <div className="UserDialog">
@@ -119,7 +87,18 @@ export default class UserDialog extends Component {
               /> 登录</label>
           </div>
           <div className="panes">
-            {this.state.selected === 'signUp' ? signUpForm : signInForm}
+            {this.state.selected === 'signUp' ?
+              <SignUpForm formData={this.state.formData}
+                onSubmit={this.signUp.bind(this)}
+                onChange={this.changeFormData.bind(this)}
+              />
+              : null}
+            {this.state.selected === 'signIn' ?
+              <SignInForm formData={this.state.formData}
+                onChange={this.changeFormData.bind(this)}
+                onSubmit={this.signIn.bind(this)}
+              />
+              : null}
           </div>
         </div>
       </div >
