@@ -15,7 +15,7 @@ export default class UserDialog extends Component {
       }
     }
   }
-  switch(e) {
+  switch = (e) =>{
     this.setState({
       selected: e.target.value
     })
@@ -28,7 +28,7 @@ export default class UserDialog extends Component {
     }
     let { username, password } = this.state.formData
     let success = (user) => {
-      this.props.onSignUp.call(null, user)
+      this.props.onSignUp(user)
     }
     let error = (error) => {
       switch (error.code) {
@@ -49,7 +49,7 @@ export default class UserDialog extends Component {
     e.preventDefault()
     let { username, password } = this.state.formData
     let success = (user) => {
-      this.props.onSignIn.call(null, user)
+      this.props.onSignIn(user)
     }
     let error = (error) => {
       switch (error.code) {
@@ -82,7 +82,7 @@ export default class UserDialog extends Component {
             <label>
               <input type="radio" value="signUp"
                 checked={this.state.selected === 'signUp'}
-                onChange={this.switch.bind(this)}
+                onChange={this.switch}
               /> 注册</label>
             <label>
               <input type="radio" value="signIn"

@@ -4,7 +4,7 @@ import './App.css'
 import TodoInput from './component/TodoInput'
 import TodoItem from './component/TodoItem'
 import UserDialog from './component/UserDialog'
-import { getCurrentUser, signOut } from './leanCloud'
+import { getCurrentUser, signOut, TodoModel } from './leanCloud'
 
 class App extends Component {
   constructor(props) {
@@ -14,14 +14,28 @@ class App extends Component {
       newTodo: '',
       todoList: []
     }
+    let user = getCurrentUser()
+    if (user) {
+      TodoModel.getByUser(user, (todos) =>
+        this.setState({ todoList: todos })
+      )
+    }
   }
   toggle(e, todo) {
+    let oldStatus = todo.status
     todo.status = todo.status === 'completed' ? '' : 'completed'
-    this.setState(this.state)
+    TodoModel.update(todo, () => {
+      this.setState(this.state)
+    }, (error) => {
+      todo.status = oldStatus
+      this.setState(this.state)
+    })
   }
   delete(event, todo) {
-    todo.deleted = true
-    this.setState(this.state)
+    TodoModel.destroy(todo.id, () => {
+      todo.deleted = true
+      this.setState(this.state)
+    })
   }
   changeTitle(event) {
     this.setState({
@@ -30,15 +44,20 @@ class App extends Component {
     })
   }
   addTodo(event) {
-    this.setState({
-      newTodo: '',
-      todoList: [...this.state.todoList,
-      {
-        id: idMaker(),
-        title: event.target.value,
-        status: null,
-        deleted: false
-      }]
+    let newTodo = {
+      title: event.target.value,
+      status: '',
+      deleted: false
+    }
+    TodoModel.create(newTodo, (id) => {
+      newTodo.id = id
+      this.state.todoList.push(newTodo)    //待优化
+      this.setState({
+        newTodo: '',
+        todoList: this.state.todoList
+      })
+    }, (error) => {
+      console.log(error)
     })
   }
   onSignUpOrSignIn(user) {
@@ -48,7 +67,7 @@ class App extends Component {
     signOut()
     this.setState({
       user: {}
-    })
+    },)
   }
   render() {
     let todos = this.state.todoList
@@ -86,10 +105,3 @@ class App extends Component {
 }
 
 export default App;
-
-let id = 0
-
-function idMaker() {
-  id += 1
-  return id
-}
